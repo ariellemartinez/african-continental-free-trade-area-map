@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>African Continental Free Trade Area | World101</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <link rel="shortcut icon" href="https://carto.com/favicon.ico" />
+    <style>
+      html, body, #map {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+    </style>
+
+    <link rel="stylesheet" href="https://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <!-- include cartodb.js library -->
+    <script src="https://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+
+    <script>
+      function main() {
+        cartodb.createVis('map', 'https://cfr-org.carto.com/u/cfr-admin/api/v2/viz/d13f3c7a-4414-440f-8f16-0a16ea9f4d31/viz.json', {
+          tiles_loader: true,
+          center_lat: -0,
+          center_lon: 30,
+          zoom: 3
+        })
+        .done(function(vis, layers) {
+			// layer 0 is the base layer, layer 1 is cartodb layer
+          	// setInteraction is disabled by default
+          	layers[1].setInteraction(true);
+          	layers[1].on('featureOver', function(e, latlng, pos, data) {
+            	cartodb.log.log(e, latlng, pos, data);
+          	});
+                map = vis.getNativeMap();
+		L.tileLayer('https://api.mapbox.com/v4/webmastercfr.atfhzrbn/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoid2VibWFzdGVyY2ZyIiwiYSI6ImNsT2lZNU0ifQ.uufuabBAFtq7dOpW0Lzd5w', {attribution: '<a href="https://au.int/en/cfta" target="_blank">African Union</a>'}).addTo(map);
+        })
+        .error(function(err) {
+          console.log(err);
+        });
+      }
+
+      window.onload = main;
+    </script>
+  </body>
+</html>
